@@ -1,0 +1,9 @@
+# Python dependencies for Email Spam Detection Project
+
+numpy          # Numerical computing, array operations
+pandas         # Data manipulation and CSV handling
+scikit-learn   # Machine learning models (Naive Bayes, Logistic Regression) and pipelines
+jupyterlab     # Jupyter notebooks for interactive development
+matplotlib     # Plotting and visualization
+seaborn        # Statistical data visualization
+joblib         # Model serialization (saving/loading trained models)
