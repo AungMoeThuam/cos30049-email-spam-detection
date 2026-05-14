@@ -2,6 +2,7 @@
 
 import re
 from html.parser import HTMLParser
+import emoji
 
 class TextPreprocessor:
     def __init__(self):
@@ -30,6 +31,10 @@ class TextPreprocessor:
 
     def remove_special_characters(self, html_text):
         self.text = re.sub(r"[~\[\]'<>(){}\\/!#%\^@+=.\-;]", "", html_text)
+        return self
+
+    def replace_emojis(self, html_text):
+        self.text = emoji.demojize(html_text)
         return self
 
 class HTMLTextExtractor(HTMLParser):

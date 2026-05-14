@@ -182,3 +182,29 @@ class TestRemoveSpecialCharacters:
         result = self.tp.remove_special_characters("a~b")
         assert result is self.tp
 
+
+class TestReplaceEmojis:
+    def setup_method(self):
+        self.tp = TextPreprocessor()
+
+    def test_replaces_money_bag(self):
+        self.tp.replace_emojis("💰")
+        assert ":money_bag:" in self.tp.text
+
+    def test_replaces_multiple_emojis(self):
+        self.tp.replace_emojis("😀👍")
+        assert ":grinning_face:" in self.tp.text
+        assert ":thumbs_up:" in self.tp.text
+
+    def test_preserves_plain_text(self):
+        self.tp.replace_emojis("hello world")
+        assert self.tp.text == "hello world"
+
+    def test_empty_string(self):
+        self.tp.replace_emojis("")
+        assert self.tp.text == ""
+
+    def test_returns_self_for_chaining(self):
+        result = self.tp.replace_emojis("💰")
+        assert result is self.tp
+
