@@ -32,3 +32,40 @@ class TestStripHtmlTags:
     def test_only_tags(self):
         self.tp.strip_html_tags("<p></p>")
         assert self.tp.text == ""
+
+
+class TestReplacePhoneNumbers:
+    def setup_method(self):
+        self.tp = TextPreprocessor()
+
+    def test_us_format_with_dashes(self):
+        self.tp.replace_phone_numbers("call 123-456-7890 now")
+        assert "Phone Number" in self.tp.text
+
+    def test_us_format_with_parentheses(self):
+        self.tp.replace_phone_numbers("call (123) 456-7890 now")
+        assert "Phone Number" in self.tp.text
+
+    def test_with_country_code(self):
+        self.tp.replace_phone_numbers("call +1-123-456-7890 now")
+        assert "Phone Number" in self.tp.text
+
+    def test_with_dots(self):
+        self.tp.replace_phone_numbers("call 123.456.7890 now")
+        assert "Phone Number" in self.tp.text
+
+    def test_short_number(self):
+        self.tp.replace_phone_numbers("call 555-1234 now")
+        assert "Phone Number" in self.tp.text
+
+    def test_no_phone_number(self):
+        self.tp.replace_phone_numbers("hello world")
+        assert self.tp.text == "hello world"
+
+    def test_empty_string(self):
+        self.tp.replace_phone_numbers("")
+        assert self.tp.text == ""
+
+    def test_returns_self_for_chaining(self):
+        result = self.tp.replace_phone_numbers("123-456-7890")
+        assert result is self.tp
