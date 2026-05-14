@@ -208,3 +208,32 @@ class TestReplaceEmojis:
         result = self.tp.replace_emojis("💰")
         assert result is self.tp
 
+
+class TestReplaceEmails:
+    def setup_method(self):
+        self.tp = TextPreprocessor()
+
+    def test_replaces_simple_email(self):
+        self.tp.replace_emails("contact user@example.com now")
+        assert "EMAIL" in self.tp.text
+
+    def test_replaces_email_with_dots(self):
+        self.tp.replace_emails("user.name@sub.example.co.uk")
+        assert "EMAIL" in self.tp.text
+
+    def test_replaces_email_with_plus(self):
+        self.tp.replace_emails("user+tag@example.com")
+        assert "EMAIL" in self.tp.text
+
+    def test_no_email(self):
+        self.tp.replace_emails("hello world")
+        assert self.tp.text == "hello world"
+
+    def test_empty_string(self):
+        self.tp.replace_emails("")
+        assert self.tp.text == ""
+
+    def test_returns_self_for_chaining(self):
+        result = self.tp.replace_emails("a@b.com")
+        assert result is self.tp
+
