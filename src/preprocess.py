@@ -11,6 +11,11 @@ class TextPreprocessor:
         self.text = re.sub(r"<[^>]+>", "", html_text)
         return self
 
+    def replace_phone_numbers(self, html_text):
+        phone_re = r"\+?\d{1,3}[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+        self.text = re.sub(phone_re, " [Phone Number] ", html_text)
+        return self
+
 class HTMLTextExtractor(HTMLParser):
     """Strip HTML tags, skip style/script blocks, extract visible text only."""
 
