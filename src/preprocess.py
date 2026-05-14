@@ -16,6 +16,14 @@ class TextPreprocessor:
         self.text = re.sub(phone_re, " [Phone Number] ", html_text)
         return self
 
+    def replace_urls(self, html_text):
+        self.text = re.sub(r'http[s]?://\S+', ' [URL] ', html_text)
+        return self
+
+    def normalize_whitespace(self, html_text):
+        self.text = re.sub(r"\s+", " ", html_text).strip()
+        return self
+
 class HTMLTextExtractor(HTMLParser):
     """Strip HTML tags, skip style/script blocks, extract visible text only."""
 
