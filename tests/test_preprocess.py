@@ -69,3 +69,61 @@ class TestReplacePhoneNumbers:
     def test_returns_self_for_chaining(self):
         result = self.tp.replace_phone_numbers("123-456-7890")
         assert result is self.tp
+
+
+class TestReplaceUrls:
+    def setup_method(self):
+        self.tp = TextPreprocessor()
+
+    def test_http_url(self):
+        self.tp.replace_urls("visit http://example.com now")
+        assert "URL" in self.tp.text
+
+    def test_https_url(self):
+        self.tp.replace_urls("visit https://example.com now")
+        assert "URL" in self.tp.text
+
+    def test_url_with_path(self):
+        self.tp.replace_urls("go to https://site.com/page?q=1")
+        assert "URL" in self.tp.text
+
+    def test_no_url(self):
+        self.tp.replace_urls("hello world")
+        assert self.tp.text == "hello world"
+
+    def test_empty_string(self):
+        self.tp.replace_urls("")
+        assert self.tp.text == ""
+
+    def test_returns_self_for_chaining(self):
+        result = self.tp.replace_urls("http://example.com")
+        assert result is self.tp
+
+
+class TestNormalizeWhitespace:
+    def setup_method(self):
+        self.tp = TextPreprocessor()
+
+    def test_multiple_spaces(self):
+        self.tp.normalize_whitespace("hello    world")
+        assert self.tp.text == "hello world"
+
+    def test_tabs_and_newlines(self):
+        self.tp.normalize_whitespace("hello\t\tworld\n\nfoo")
+        assert self.tp.text == "hello world foo"
+
+    def test_leading_trailing_spaces(self):
+        self.tp.normalize_whitespace("   hello world   ")
+        assert self.tp.text == "hello world"
+
+    def test_single_word(self):
+        self.tp.normalize_whitespace("hello")
+        assert self.tp.text == "hello"
+
+    def test_empty_string(self):
+        self.tp.normalize_whitespace("")
+        assert self.tp.text == ""
+
+    def test_returns_self_for_chaining(self):
+        result = self.tp.normalize_whitespace("a  b")
+        assert result is self.tp
