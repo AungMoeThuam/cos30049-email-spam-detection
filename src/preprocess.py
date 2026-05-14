@@ -3,6 +3,13 @@
 import re
 from html.parser import HTMLParser
 
+class TextPreprocessor:
+    def __init__(self):
+        self.text = ""
+
+    def strip_html_tags(self, html_text):
+        self.text = re.sub(r"<[^>]+>", "", html_text)
+        return self
 
 class HTMLTextExtractor(HTMLParser):
     """Strip HTML tags, skip style/script blocks, extract visible text only."""
