@@ -43,6 +43,14 @@ class TextPreprocessor:
         self.text = re.sub(email_re, " [EMAIL] ", html_text)
         return self
 
+    def replace_percentages(self, html_text):
+        self.text = re.sub(r"\b\d+(?:\.\d+)?\s?%", " [PERCENTAGE] ", html_text)
+        return self
+
+    def replace_numbers(self, html_text):
+        self.text = re.sub(r"\b\d+\b", " [NUMBER] ", html_text)
+        return self
+
     def get_text(self):
         return self.text
 

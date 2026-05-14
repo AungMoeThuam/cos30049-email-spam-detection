@@ -237,3 +237,58 @@ class TestReplaceEmails:
         result = self.tp.replace_emails("a@b.com")
         assert result is self.tp
 
+
+class TestReplacePercentages:
+    def setup_method(self):
+        self.tp = TextPreprocessor()
+
+    def test_percentage_without_space(self):
+        self.tp.replace_percentages("increase 50%")
+        assert "PERCENTAGE" in self.tp.text
+
+    def test_percentage_with_space(self):
+        self.tp.replace_percentages("increase 50 %")
+        assert "PERCENTAGE" in self.tp.text
+
+    def test_decimal_percentage(self):
+        self.tp.replace_percentages("rate 12.5%")
+        assert "PERCENTAGE" in self.tp.text
+
+    def test_no_percentage(self):
+        self.tp.replace_percentages("hello world")
+        assert self.tp.text == "hello world"
+
+    def test_empty_string(self):
+        self.tp.replace_percentages("")
+        assert self.tp.text == ""
+
+    def test_returns_self_for_chaining(self):
+        result = self.tp.replace_percentages("50%")
+        assert result is self.tp
+
+
+class TestReplaceNumbers:
+    def setup_method(self):
+        self.tp = TextPreprocessor()
+
+    def test_replaces_number(self):
+        self.tp.replace_numbers("count 42")
+        assert "NUMBER" in self.tp.text
+
+    def test_replaces_multiple_numbers(self):
+        self.tp.replace_numbers("10 items cost 25 dollars")
+        assert "NUMBER" in self.tp.text
+        assert self.tp.text.count("NUMBER") == 2
+
+    def test_no_number(self):
+        self.tp.replace_numbers("hello world")
+        assert self.tp.text == "hello world"
+
+    def test_empty_string(self):
+        self.tp.replace_numbers("")
+        assert self.tp.text == ""
+
+    def test_returns_self_for_chaining(self):
+        result = self.tp.replace_numbers("42")
+        assert result is self.tp
+
