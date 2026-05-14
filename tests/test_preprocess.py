@@ -152,3 +152,33 @@ class TestToLowercase:
     def test_returns_self_for_chaining(self):
         result = self.tp.to_lowercase("ABC")
         assert result is self.tp
+
+
+class TestRemoveSpecialCharacters:
+    def setup_method(self):
+        self.tp = TextPreprocessor()
+
+    def test_removes_listed_chars(self):
+        self.tp.remove_special_characters("~[]'<>(){}\\/!#%^@+=-;.")
+        assert self.tp.text == ""
+
+    def test_preserves_dollar_and_question(self):
+        self.tp.remove_special_characters("hello$world?")
+        assert self.tp.text == "hello$world?"
+
+    def test_preserves_alphanumeric(self):
+        self.tp.remove_special_characters("hello123")
+        assert self.tp.text == "hello123"
+
+    def test_preserves_whitespace(self):
+        self.tp.remove_special_characters("a @ b")
+        assert self.tp.text == "a  b"
+
+    def test_empty_string(self):
+        self.tp.remove_special_characters("")
+        assert self.tp.text == ""
+
+    def test_returns_self_for_chaining(self):
+        result = self.tp.remove_special_characters("a~b")
+        assert result is self.tp
+
