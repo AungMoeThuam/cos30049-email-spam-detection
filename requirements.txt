@@ -7,3 +7,4 @@ jupyterlab     # Jupyter notebooks for interactive development
 matplotlib     # Plotting and visualization
 seaborn        # Statistical data visualization
 joblib         # Model serialization (saving/loading trained models)
+pytest         # Testing framework
