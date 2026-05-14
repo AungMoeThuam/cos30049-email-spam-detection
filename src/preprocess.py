@@ -43,6 +43,9 @@ class TextPreprocessor:
         self.text = re.sub(email_re, " [EMAIL] ", html_text)
         return self
 
+    def get_text(self):
+        return self.text
+
 
 class HTMLTextExtractor(HTMLParser):
     """Strip HTML tags, skip style/script blocks, extract visible text only."""
