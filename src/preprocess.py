@@ -38,6 +38,11 @@ class TextPreprocessor:
         self.text = emoji.demojize(html_text)
         return self
 
+    def replace_emails(self, html_text):
+        email_re = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
+        self.text = re.sub(email_re, " [EMAIL] ", html_text)
+        return self
+
 
 class HTMLTextExtractor(HTMLParser):
     """Strip HTML tags, skip style/script blocks, extract visible text only."""
