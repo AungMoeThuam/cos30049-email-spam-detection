@@ -127,3 +127,28 @@ class TestNormalizeWhitespace:
     def test_returns_self_for_chaining(self):
         result = self.tp.normalize_whitespace("a  b")
         assert result is self.tp
+
+
+class TestToLowercase:
+    def setup_method(self):
+        self.tp = TextPreprocessor()
+
+    def test_uppercase(self):
+        self.tp.to_lowercase("HELLO WORLD")
+        assert self.tp.text == "hello world"
+
+    def test_mixed_case(self):
+        self.tp.to_lowercase("Hello World")
+        assert self.tp.text == "hello world"
+
+    def test_already_lower(self):
+        self.tp.to_lowercase("hello world")
+        assert self.tp.text == "hello world"
+
+    def test_empty_string(self):
+        self.tp.to_lowercase("")
+        assert self.tp.text == ""
+
+    def test_returns_self_for_chaining(self):
+        result = self.tp.to_lowercase("ABC")
+        assert result is self.tp

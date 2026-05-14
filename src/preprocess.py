@@ -24,6 +24,10 @@ class TextPreprocessor:
         self.text = re.sub(r"\s+", " ", html_text).strip()
         return self
 
+    def to_lowercase(self, html_text):
+        self.text = html_text.lower()
+        return self
+
 class HTMLTextExtractor(HTMLParser):
     """Strip HTML tags, skip style/script blocks, extract visible text only."""
 
