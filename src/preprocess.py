@@ -66,51 +66,6 @@ class HTMLTextExtractor(HTMLParser):
         return " ".join(self.text_parts)
 
 
-def clean_text(text):
-    """Clean and normalize text.
-
-    Performs:
-    - URL replacement with <URL> token
-    - Email replacement with <EMAIL> token
-    - Number replacement with <NUM> token
-    - Punctuation removal
-    - Lowercase conversion
-    - Whitespace normalization
-
-    Args:
-        text: Raw text string
-
-    Returns:
-        Cleaned text string
-    """
-    if not isinstance(text, str):
-        return ""  # Return empty string for non-string inputs
-
-    # Convert to lowercase for consistency
-    text = text.lower()
-
-    # Replace URLs with [URL] token
-    text = re.sub(r"http[s]?://\S+", " [URL] ", text)
-
-    # Replace email addresses with [EMAIL] token
-    text = re.sub(
-        r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", " [EMAIL] ", text
-    )
-
-    # Replace standalone numbers with [NUM] token
-    text = re.sub(r"\b\d+\b", " [NUM] ", text)
-
-    # Remove punctuation (keep [URL], [EMAIL], [NUM] tokens)
-    text = re.sub(r"[^\w\s<>]", "", text)
-
-    # Normalize whitespace (multiple spaces to single)
-    text = re.sub(r"\s+", " ", text)
-
-    # Remove leading/trailing whitespace
-    text = text.strip()
-    return text
-
-
 def parse_eml(filepath):
     """Parse .eml email file and extract subject and body.
 
