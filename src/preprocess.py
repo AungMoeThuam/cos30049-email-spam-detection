@@ -4,6 +4,7 @@ import re
 from html.parser import HTMLParser
 import emoji
 
+
 class TextPreprocessor:
     def __init__(self):
         self.text = ""
@@ -18,7 +19,7 @@ class TextPreprocessor:
         return self
 
     def replace_urls(self, html_text):
-        self.text = re.sub(r'http[s]?://\S+', ' [URL] ', html_text)
+        self.text = re.sub(r"http[s]?://\S+", " [URL] ", html_text)
         return self
 
     def normalize_whitespace(self, html_text):
@@ -36,6 +37,7 @@ class TextPreprocessor:
     def replace_emojis(self, html_text):
         self.text = emoji.demojize(html_text)
         return self
+
 
 class HTMLTextExtractor(HTMLParser):
     """Strip HTML tags, skip style/script blocks, extract visible text only."""
@@ -83,27 +85,29 @@ def clean_text(text):
     """
     if not isinstance(text, str):
         return ""  # Return empty string for non-string inputs
-    
+
     # Convert to lowercase for consistency
-    text = text.lower()  
+    text = text.lower()
 
     # Replace URLs with [URL] token
-    text = re.sub(r'http[s]?://\S+', ' [URL] ', text)  
+    text = re.sub(r"http[s]?://\S+", " [URL] ", text)
 
     # Replace email addresses with [EMAIL] token
-    text = re.sub(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', ' [EMAIL] ', text)  
+    text = re.sub(
+        r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", " [EMAIL] ", text
+    )
 
     # Replace standalone numbers with [NUM] token
-    text = re.sub(r'\b\d+\b', ' [NUM] ', text)  
+    text = re.sub(r"\b\d+\b", " [NUM] ", text)
 
     # Remove punctuation (keep [URL], [EMAIL], [NUM] tokens)
-    text = re.sub(r'[^\w\s<>]', '', text)  
+    text = re.sub(r"[^\w\s<>]", "", text)
 
     # Normalize whitespace (multiple spaces to single)
-    text = re.sub(r"\s+", " ", text)  
+    text = re.sub(r"\s+", " ", text)
 
     # Remove leading/trailing whitespace
-    text = text.strip()  
+    text = text.strip()
     return text
 
 
