@@ -13,8 +13,8 @@ ENV/
 */.ipynb_checkpoints/*
 
 # Data and Models
-data/processed/*
-data/raw/*
+data/processed/*.csv
+data/raw/*.csv
 models/*.pkl
 models/*.joblib
 
