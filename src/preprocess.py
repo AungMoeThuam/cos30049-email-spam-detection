@@ -28,6 +28,10 @@ class TextPreprocessor:
         self.text = html_text.lower()
         return self
 
+    def remove_special_characters(self, html_text):
+        self.text = re.sub(r"[~\[\]'<>(){}\\/!#%\^@+=.\-;]", "", html_text)
+        return self
+
 class HTMLTextExtractor(HTMLParser):
     """Strip HTML tags, skip style/script blocks, extract visible text only."""
 
