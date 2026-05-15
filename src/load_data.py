@@ -278,3 +278,59 @@ def load_CEAS_08(encoding="utf-8"):
     df["text"] = df["subject"].astype(str) + " " + df["body"].astype(str)
 
     return df[["text", "label"]]
+
+
+def load_dataset(dataset_name="250K_email_dataset", encoding="utf-8"):
+    """Load a dataset by name.
+    
+    Available datasets:
+        - enron
+        - enron_2
+        - spam_assassin
+        - spam_assassin_2
+        - email_spam_dataset
+        - phishing_email
+        - sms_spam_dataset
+        - spam_email_detection_dataset
+        - 250K_email_dataset (default)
+        - 190K_email_content
+        - NLP_spam_ham_email
+        - ling_spam
+        - nigerian_fraud
+        - nazario
+        - CEAS_08
+    
+    Args:
+        dataset_name: Name of the dataset to load.
+        encoding: Encoding used to read CSV files.
+        
+    Returns:
+        DataFrame with columns: 'text', 'label'
+        
+    Raises:
+        ValueError: If dataset_name is not recognized.
+    """
+    loaders = {
+        "enron": load_enron_spam,
+        "enron_2": load_enron_spam_2,
+        "spam_assassin": load_spam_assassin,
+        "spam_assassin_2": load_spam_assassin_2,
+        "email_spam_dataset": load_email_spam_dataset,
+        "phishing_email": load_phishing_email,
+        "sms_spam_dataset": load_sms_spam_dataset,
+        "spam_email_detection_dataset": load_spam_email_detection_dataset,
+        "250K_email_dataset": load_250K_email_dataset,
+        "190K_email_content": load_190K_email_content,
+        "NLP_spam_ham_email": load_NLP_spam_ham_email,
+        "ling_spam": load_ling_spam,
+        "nigerian_fraud": load_nigerian_fraud,
+        "nazario": load_nazario,
+        "CEAS_08": load_CEAS_08,
+    }
+    
+    if dataset_name not in loaders:
+        raise ValueError(
+            f"Dataset '{dataset_name}' not found. Available datasets: {list(loaders.keys())}"
+        )
+    
+    return loaders[dataset_name](encoding=encoding)
