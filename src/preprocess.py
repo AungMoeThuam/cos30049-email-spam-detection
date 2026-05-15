@@ -6,49 +6,49 @@ import emoji
 
 
 class TextPreprocessor:
-    def __init__(self):
-        self.text = ""
+    def __init__(self, text=""):
+        self.text = text
 
-    def strip_html_tags(self, html_text):
-        self.text = re.sub(r"<[^>]+>", "", html_text)
+    def strip_html_tags(self):
+        self.text = re.sub(r"<[^>]+>", "", self.text)
         return self
 
-    def replace_phone_numbers(self, html_text):
+    def replace_phone_numbers(self):
         phone_re = r"\+?\d{1,3}[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-        self.text = re.sub(phone_re, " [Phone Number] ", html_text)
+        self.text = re.sub(phone_re, " [Phone Number] ", self.text)
         return self
 
-    def replace_urls(self, html_text):
-        self.text = re.sub(r"http[s]?://\S+", " [URL] ", html_text)
+    def replace_urls(self):
+        self.text = re.sub(r"http[s]?://\S+", " [URL] ", self.text)
         return self
 
-    def normalize_whitespace(self, html_text):
-        self.text = re.sub(r"\s+", " ", html_text).strip()
+    def normalize_whitespace(self):
+        self.text = re.sub(r"\s+", " ", self.text).strip()
         return self
 
-    def to_lowercase(self, html_text):
-        self.text = html_text.lower()
+    def to_lowercase(self):
+        self.text = self.text.lower()
         return self
 
-    def remove_special_characters(self, html_text):
-        self.text = re.sub(r"[~\[\]'<>(){}\\/!#%\^@+=.\-;]", "", html_text)
+    def remove_special_characters(self):
+        self.text = re.sub(r"[~\[\]'<>(){}\\/!#%\^@+=.\-;]", "", self.text)
         return self
 
-    def replace_emojis(self, html_text):
-        self.text = emoji.demojize(html_text)
+    def replace_emojis(self):
+        self.text = emoji.demojize(self.text)
         return self
 
-    def replace_emails(self, html_text):
+    def replace_emails(self):
         email_re = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
-        self.text = re.sub(email_re, " [EMAIL] ", html_text)
+        self.text = re.sub(email_re, " [EMAIL] ", self.text)
         return self
 
-    def replace_percentages(self, html_text):
-        self.text = re.sub(r"\b\d+(?:\.\d+)?\s?%", " [PERCENTAGE] ", html_text)
+    def replace_percentages(self):
+        self.text = re.sub(r"\b\d+(?:\.\d+)?\s?%", " [PERCENTAGE] ", self.text)
         return self
 
-    def replace_numbers(self, html_text):
-        self.text = re.sub(r"\b\d+\b", " [NUMBER] ", html_text)
+    def replace_numbers(self):
+        self.text = re.sub(r"\b\d+\b", " [NUMBER] ", self.text)
         return self
 
     def get_text(self):
