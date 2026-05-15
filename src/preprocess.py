@@ -31,11 +31,15 @@ class TextPreprocessor:
         return self
 
     def remove_special_characters(self):
-        self.text = re.sub(r"[~\[\]'<>(){}\\/!#%\^@+=.\-;]", "", self.text)
+        self.text = re.sub(r"[:?,.*]", "", self.text)
         return self
 
     def replace_emojis(self):
-        self.text = emoji.demojize(self.text)
+        self.text = re.sub(
+            r":([a-z0-9_]+):",
+            lambda m: "[" + "".join(w.capitalize() for w in m.group(1).split("_")) + "EMOJI]",
+            emoji.demojize(self.text),
+        )
         return self
 
     def replace_emails(self):
