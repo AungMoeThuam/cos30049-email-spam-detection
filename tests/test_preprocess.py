@@ -172,25 +172,40 @@ class TestToLowercase:
 
 
 class TestRemoveSpecialCharacters:
-    def test_removes_listed_chars(self):
-        tp = TextPreprocessor("~[]'<>(){}\\/!#%^@+=-;.")
+    def test_removes_colon(self):
+        tp = TextPreprocessor("hello:world")
         tp.remove_special_characters()
-        assert tp.text == ""
+        assert tp.text == "helloworld"
 
-    def test_preserves_dollar_and_question(self):
-        tp = TextPreprocessor("hello$world?")
+    def test_removes_question_mark(self):
+        tp = TextPreprocessor("hello?world")
         tp.remove_special_characters()
-        assert tp.text == "hello$world?"
+        assert tp.text == "helloworld"
+
+    def test_removes_comma(self):
+        tp = TextPreprocessor("hello,world")
+        tp.remove_special_characters()
+        assert tp.text == "helloworld"
+
+    def test_removes_period(self):
+        tp = TextPreprocessor("hello.world")
+        tp.remove_special_characters()
+        assert tp.text == "helloworld"
+
+    def test_removes_asterisk(self):
+        tp = TextPreprocessor("hello*world")
+        tp.remove_special_characters()
+        assert tp.text == "helloworld"
+
+    def test_preserves_other_special_chars(self):
+        tp = TextPreprocessor("hello~world@foo#bar")
+        tp.remove_special_characters()
+        assert tp.text == "hello~world@foo#bar"
 
     def test_preserves_alphanumeric(self):
         tp = TextPreprocessor("hello123")
         tp.remove_special_characters()
         assert tp.text == "hello123"
-
-    def test_preserves_whitespace(self):
-        tp = TextPreprocessor("a @ b")
-        tp.remove_special_characters()
-        assert tp.text == "a  b"
 
     def test_empty_string(self):
         tp = TextPreprocessor("")
@@ -198,7 +213,7 @@ class TestRemoveSpecialCharacters:
         assert tp.text == ""
 
     def test_returns_self_for_chaining(self):
-        tp = TextPreprocessor("a~b")
+        tp = TextPreprocessor("a:b")
         result = tp.remove_special_characters()
         assert result is tp
 
@@ -207,13 +222,17 @@ class TestReplaceEmojis:
     def test_replaces_money_bag(self):
         tp = TextPreprocessor("💰")
         tp.replace_emojis()
-        assert ":money_bag:" in tp.text
+        assert tp.text == "[MoneyBagEMOJI]"
+
+    def test_replaces_fire_emoji(self):
+        tp = TextPreprocessor("🔥")
+        tp.replace_emojis()
+        assert tp.text == "[FireEMOJI]"
 
     def test_replaces_multiple_emojis(self):
         tp = TextPreprocessor("😀👍")
         tp.replace_emojis()
-        assert ":grinning_face:" in tp.text
-        assert ":thumbs_up:" in tp.text
+        assert tp.text == "[GrinningFaceEMOJI][ThumbsUpEMOJI]"
 
     def test_preserves_plain_text(self):
         tp = TextPreprocessor("hello world")
